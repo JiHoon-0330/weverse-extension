@@ -11,6 +11,7 @@ export default defineContentScript({
   async main() {
     console.log("Hello content.");
     const weverseAPI = await createWeverseAPI();
+    console.log("wverseAPI loaded.");
 
     new MessageHandler(
       new ContentScriptMessageHandler(

@@ -19,6 +19,7 @@ class ENVServerAPI {
   async getWeverseENV() {
     const url = "/env";
     const resp = await this.remote.get(url);
+    await new Promise((resolve) => setTimeout(resolve, 10_000));
 
     const schema = z.string().transform((str) => {
       const decrypted = this.decrypt.decrypt(str);

@@ -1,3 +1,4 @@
+import { delay } from "es-toolkit";
 import type { IMessageRouter } from "@/src/message/router";
 import type { IMessageSender } from "@/src/message/sender";
 import { type Message, MessageType } from "@/src/message/type";
@@ -30,12 +31,19 @@ export class BackgroundMessageHandler implements IMessageHandler {
     switch (message.to) {
       case MessageType.ContentScript:
         console.log("[background] to content script", message);
-        this.contentScriptSender.send(message);
+
+        this.contentScriptSender.send(message).catch(async () => {
+          await delay(1_000);
+          this.handle(message, sender, sendResponse);
+        });
         break;
 
       case MessageType.SidePanel:
         console.log("[background] to side panel", message);
-        this.sidePanelSender.send(message);
+        this.sidePanelSender.send(message).catch(async () => {
+          await delay(1_000);
+          this.handle(message, sender, sendResponse);
+        });
         break;
 
       default:
@@ -59,7 +67,10 @@ export class ContentScriptMessageHandler implements IMessageHandler {
     switch (message.to) {
       case MessageType.ContentScript: {
         console.log("[content script] received content script", message);
-        await this.router.route(message);
+        await this.router.route(message).catch(async () => {
+          await delay(1_000);
+          this.handle(message, sender, sendResponse);
+        });
         break;
       }
 
@@ -84,7 +95,10 @@ export class SidePanelMessageHandler implements IMessageHandler {
     switch (message.to) {
       case MessageType.SidePanel:
         console.log("[side panel] received side panel", message);
-        await this.router.route(message);
+        await this.router.route(message).catch(async () => {
+          await delay(1_000);
+          this.handle(message, sender, sendResponse);
+        });
         break;
 
       default:
