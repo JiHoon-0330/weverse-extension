@@ -27,3 +27,6 @@ web-ext.config.ts
 
 # outdir
 dist
+
+#env
+.env
