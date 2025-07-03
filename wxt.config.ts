@@ -11,6 +11,6 @@ export default defineConfig({
     side_panel: {
       default_path: "sidepanel.html",
     },
-    permissions: ["sidePanel"],
+    permissions: ["sidePanel", "tabs"],
   },
 });
