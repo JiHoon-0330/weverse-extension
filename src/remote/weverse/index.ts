@@ -38,7 +38,7 @@ class WeverseAPI {
     };
 
     const prepareData = this.prepareHmac.prepareData(url, params);
-    const wmd = await this.hamc.createHmacSha1(prepareData.data);
+    const wmd = await this.hamc.createHmac(prepareData.data);
 
     params.wmsgpad = prepareData.time;
     params.wmd = wmd;
