@@ -14,17 +14,8 @@ export default defineContentScript({
 
     new MessageHandler(
       new ContentScriptMessageHandler(
-        new ContentScriptMessageRouter(new BackgroundSender()),
+        new ContentScriptMessageRouter(new BackgroundSender(), weverseAPI),
       ),
     );
-
-    weverseAPI
-      .fetchNotiFeedActivities()
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((e) => {
-        console.error(e);
-      });
   },
 });

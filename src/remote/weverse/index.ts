@@ -8,7 +8,11 @@ import {
   PrepareHmac,
 } from "@/src/remote/weverse/prepare-hamc";
 
-class WeverseAPI {
+export interface IWeverseAPI {
+  fetchNotiFeedActivities(): Promise<unknown>;
+}
+
+class WeverseAPI implements IWeverseAPI {
   private readonly remote: IRemote;
   private readonly hamc: IHamc;
   private readonly prepareHmac: IPrepareHmac;

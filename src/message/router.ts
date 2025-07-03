@@ -4,8 +4,9 @@ import {
   type Message,
   MessageType,
   type SidePanelMessage,
-  type SidePanelMessageData,
 } from "@/src/message/type";
+import type { IWeverseAPI } from "@/src/remote/weverse";
+import type { IData } from "@/src/sidepanel/store/data";
 
 export interface IMessageRouter {
   route(message: Message): Promise<void>;
@@ -13,19 +14,23 @@ export interface IMessageRouter {
 
 export class ContentScriptMessageRouter implements IMessageRouter {
   private readonly sender: IMessageSender;
+  private readonly weverseAPI: IWeverseAPI;
 
-  constructor(sender: IMessageSender) {
+  constructor(sender: IMessageSender, weverseAPI: IWeverseAPI) {
     this.sender = sender;
+    this.weverseAPI = weverseAPI;
   }
 
   async route(message: ContentScriptMessage) {
     switch (message.data.type) {
-      case "test":
+      case "fetchNotiFeedActivities":
         await this.sender.send({
           from: MessageType.ContentScript,
           to: MessageType.SidePanel,
           data: {
-            type: "test",
+            type: "fetchNotiFeedActivities",
+            // TODO: 데이터 타입 추가
+            data: (await this.weverseAPI.fetchNotiFeedActivities()) as {},
           },
         });
         break;
@@ -37,17 +42,25 @@ export class ContentScriptMessageRouter implements IMessageRouter {
 }
 
 export class SidePanelMessageRouter implements IMessageRouter {
-  private readonly setState: (state: SidePanelMessageData) => void;
+  private readonly setState: (state: IData) => void;
 
-  constructor(setState: (state: SidePanelMessageData) => void) {
+  constructor(setState: (state: IData) => void) {
     this.setState = setState;
   }
 
   async route(message: SidePanelMessage) {
     switch (message.data.type) {
-      case "test":
-        console.log("[side panel] received test message", message);
-        this.setState(message.data);
+      case "fetchNotiFeedActivities":
+        console.log(
+          "[side panel] received fetchNotiFeedActivities message",
+          message,
+        );
+        this.setState({
+          fetchNotiFeedActivities: {
+            isLoading: false,
+            data: message.data.data,
+          },
+        });
         break;
     }
   }

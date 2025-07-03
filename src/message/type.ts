@@ -5,7 +5,8 @@ export enum MessageType {
 }
 
 export type SidePanelMessageData = {
-  type: "test";
+  type: "fetchNotiFeedActivities";
+  data: {};
 };
 
 export type SidePanelMessage = {
@@ -15,7 +16,7 @@ export type SidePanelMessage = {
 };
 
 export type ContentScriptMessageData = {
-  type: "test";
+  type: "fetchNotiFeedActivities";
 };
 
 export type ContentScriptMessage = {

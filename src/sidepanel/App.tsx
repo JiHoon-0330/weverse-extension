@@ -1,38 +1,39 @@
 import { MessageHandler, SidePanelMessageHandler } from "@/src/message/handler";
 import "./App.css";
+import { useLayoutEffect } from "react";
 import { SidePanelMessageRouter } from "@/src/message/router";
 import { BackgroundSender } from "@/src/message/sender";
-import { MessageType, type SidePanelMessageData } from "@/src/message/type";
+import { MessageType } from "@/src/message/type";
+import { useDataStore } from "@/src/sidepanel/store/data.hook";
 
 function App() {
-  const [response, setResponse] = useState<SidePanelMessageData | null>(null);
+  const data = useDataStore((store) => store.data);
+  const setData = useDataStore((store) => store.setData);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     new MessageHandler(
       new SidePanelMessageHandler(
-        new SidePanelMessageRouter((state) => setResponse(state)),
+        new SidePanelMessageRouter((state) => setData(state)),
       ),
     );
-  }, []);
+
+    const sender = new BackgroundSender();
+    sender.send({
+      from: MessageType.SidePanel,
+      to: MessageType.ContentScript,
+      data: {
+        type: "fetchNotiFeedActivities",
+      },
+    });
+  }, [setData]);
 
   return (
     <main>
-      <button
-        type="button"
-        onClick={async () => {
-          const sender = new BackgroundSender();
-          await sender.send({
-            from: MessageType.SidePanel,
-            to: MessageType.ContentScript,
-            data: {
-              type: "test",
-            },
-          });
-        }}
-      >
-        메세지 보내기
-      </button>
-      <p>응답: {response?.type}</p>
+      {data.fetchNotiFeedActivities.isLoading ? (
+        <p>Loading...</p>
+      ) : (
+        JSON.stringify(data.fetchNotiFeedActivities)
+      )}
     </main>
   );
 }
