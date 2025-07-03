@@ -27,7 +27,7 @@ class ENVServerAPI {
         appId: z.string(),
         tokenName: z.string(),
       });
-      return decryptedSchema.parse(decrypted);
+      return decryptedSchema.parse(JSON.parse(decrypted));
     });
 
     return schema.parse(resp);
