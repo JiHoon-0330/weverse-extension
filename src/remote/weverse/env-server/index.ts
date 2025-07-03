@@ -37,7 +37,7 @@ class ENVServerAPI {
 export const envServerAPI = new ENVServerAPI(
   new AxiosClient({
     options: {
-      baseURL: env.WXT_ENV_SERVER_BASE_URL,
+      baseURL: "https://weverse-extension-server.onrender.com",
     },
   }),
   new Decrypt(env.WXT_ENV_SERVER_KEY),

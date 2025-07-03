@@ -1,5 +1,4 @@
 import { defineConfig } from "wxt";
-import { env } from "@/src/env";
 
 // See https://wxt.dev/api/config.html
 export default defineConfig({
@@ -13,6 +12,6 @@ export default defineConfig({
       default_path: "sidepanel.html",
     },
     permissions: ["sidePanel", "tabs"],
-    host_permissions: [`${env.WXT_ENV_SERVER_BASE_URL}/*`],
+    host_permissions: ["https://weverse-extension-server.onrender.com/*"],
   },
 });
