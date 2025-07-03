@@ -5,6 +5,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "test": "bun test --watch",
     "dev": "wxt",
     "dev:firefox": "wxt -b firefox",
     "build": "wxt build",
@@ -22,6 +23,7 @@
   },
   "dependencies": {
     "axios": "^1.10.0",
+    "crypto-js": "^4.2.0",
     "js-cookie": "^3.0.5",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
@@ -30,6 +32,7 @@
   "devDependencies": {
     "@biomejs/biome": "^2.0.6",
     "@types/bun": "^1.2.17",
+    "@types/crypto-js": "^4.2.2",
     "@types/js-cookie": "^3.0.6",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.3",

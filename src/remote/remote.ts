@@ -4,4 +4,5 @@ export interface IRemote {
 
 export interface GetOptions {
   params?: Record<string, string>;
+  headers?: Record<string, string>;
 }

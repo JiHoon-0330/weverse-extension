@@ -1,7 +1,7 @@
 import Cookies from "js-cookie";
-import { env } from "@/src/env";
 import { AxiosClient } from "@/src/remote/axios";
 import type { IRemote } from "@/src/remote/remote";
+import { envServerAPI } from "@/src/remote/weverse/env-server";
 import { Hamc, type IHamc } from "@/src/remote/weverse/hamc";
 import {
   type IPrepareHmac,
@@ -48,22 +48,26 @@ class WeverseAPI {
   }
 }
 
-export const weverseAPI = new WeverseAPI(
-  new AxiosClient({
-    options: {
-      baseURL: "https://global.apis.naver.com",
-      headers: {
-        "wev-timezone-id": Intl.DateTimeFormat().resolvedOptions().timeZone,
+export async function createWeverseAPI() {
+  const env = await envServerAPI.getWeverseENV();
+
+  return new WeverseAPI(
+    new AxiosClient({
+      options: {
+        baseURL: "https://global.apis.naver.com",
+        headers: {
+          "wev-timezone-id": Intl.DateTimeFormat().resolvedOptions().timeZone,
+        },
       },
-    },
-    beforeHooks: [
-      async (config) => {
-        const token = Cookies.get("we2_access_token");
-        config.headers.authorization = `Bearer ${token}`;
-        return config;
-      },
-    ],
-  }),
-  new Hamc(env.WXT_WVK),
-  new PrepareHmac("/weverse/wevweb"),
-);
+      beforeHooks: [
+        async (config) => {
+          const token = Cookies.get("we2_access_token");
+          config.headers.authorization = `Bearer ${token}`;
+          return config;
+        },
+      ],
+    }),
+    new Hamc(env.apiSecret, "SHA-1"),
+    new PrepareHmac("/weverse/wevweb"),
+  );
+}

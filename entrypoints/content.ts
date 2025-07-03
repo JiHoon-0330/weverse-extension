@@ -4,12 +4,13 @@ import {
 } from "@/src/message/handler";
 import { ContentScriptMessageRouter } from "@/src/message/router";
 import { BackgroundSender } from "@/src/message/sender";
-import { weverseAPI } from "@/src/remote/weverse";
+import { createWeverseAPI } from "@/src/remote/weverse";
 
 export default defineContentScript({
   matches: ["https://weverse.io/*"],
-  main() {
+  async main() {
     console.log("Hello content.");
+    const weverseAPI = await createWeverseAPI();
 
     new MessageHandler(
       new ContentScriptMessageHandler(
