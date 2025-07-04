@@ -22,6 +22,7 @@
     ]
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.81.5",
     "axios": "^1.10.0",
     "crypto-js": "^4.2.0",
     "es-toolkit": "^1.39.6",

@@ -1,11 +1,11 @@
 import { z } from "zod/v4";
-import { env } from "@/src/env";
 import { AxiosClient } from "@/src/remote/axios";
 import type { IRemote } from "@/src/remote/remote";
 import {
   Decrypt,
   type IDecrypt,
 } from "@/src/remote/weverse/env-server/decrypt";
+import { env } from "@/src/util/env";
 
 class ENVServerAPI {
   private readonly remote: IRemote;
@@ -19,7 +19,7 @@ class ENVServerAPI {
   async getWeverseENV() {
     const url = "/env";
     const resp = await this.remote.get(url);
-    await new Promise((resolve) => setTimeout(resolve, 10_000));
+    // await new Promise((resolve) => setTimeout(resolve, 10_000));
 
     const schema = z.string().transform((str) => {
       const decrypted = this.decrypt.decrypt(str);

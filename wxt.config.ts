@@ -9,7 +9,7 @@ export default defineConfig({
       default_title: "Weverse",
     },
     side_panel: {
-      default_path: "sidepanel.html",
+      default_path: "side-panel.html",
     },
     permissions: ["sidePanel", "tabs"],
     host_permissions: ["https://weverse-extension-server.onrender.com/*"],

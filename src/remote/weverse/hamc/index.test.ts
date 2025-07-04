@@ -1,6 +1,6 @@
 import { expect, test } from "bun:test";
-import { env } from "@/src/env";
 import { Hamc } from "@/src/remote/weverse/hamc";
+import { env } from "@/src/util/env";
 
 test("createHmac", async () => {
   const data =

@@ -1,6 +1,6 @@
 import { expect, test } from "bun:test";
-import { env } from "@/src/env";
 import { Decrypt } from "@/src/remote/weverse/env-server/decrypt";
+import { env } from "@/src/util/env";
 
 test("decrypt", () => {
   const decrypt = new Decrypt(env.WXT_ENV_SERVER_KEY);
