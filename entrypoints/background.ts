@@ -1,6 +1,5 @@
 import { SidePanelManager } from "@/src/browser/side-panel/manager";
-import { TabActivated } from "@/src/browser/tabs/activated";
-import { TabUpdated } from "@/src/browser/tabs/updated";
+import { TabActivated, TabUpdated } from "@/src/browser/tabs/handler";
 import { Whitelist } from "@/src/util/whitelist";
 
 export default defineBackground(() => {
@@ -9,12 +8,10 @@ export default defineBackground(() => {
     "side-panel.html",
     whitelist.isAllowed.bind(whitelist),
   );
-  const tabUpdated = new TabUpdated();
-  const tabActivated = new TabActivated();
-  tabUpdated.handleTabUpdate((tabId, _, tab) => {
+  new TabUpdated((tabId, _, tab) => {
     sidePanelManager.updateSidePanelState(tab.url, tabId);
   });
-  tabActivated.handleTabActivated(async (activeInfo) => {
+  new TabActivated(async (activeInfo) => {
     const tab = await browser.tabs.get(activeInfo.tabId);
     sidePanelManager.updateSidePanelState(tab.url, activeInfo.tabId);
   });

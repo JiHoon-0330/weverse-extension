@@ -1,5 +1,11 @@
+export class TabActivated {
+  constructor(handler: (activeInfo: Browser.tabs.TabActiveInfo) => void) {
+    browser.tabs.onActivated.addListener(handler);
+  }
+}
+
 export class TabUpdated {
-  handleTabUpdate(
+  constructor(
     handler: (
       tabId: number,
       changeInfo: globalThis.Browser.tabs.TabChangeInfo,
