@@ -1,24 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
+import { sendMessage } from "@/src/browser/message/send-message";
 
 export function NotiFeed() {
   const query = useQuery({
     queryKey: ["fetchNotiFeedActivities"],
     queryFn: async () => {
-      const [tab] = await browser.tabs.query({
-        active: true,
-        currentWindow: true,
-      });
-      const currentTabId = tab.id;
-
-      if (!currentTabId) throw new Error("No active tab found");
-
-      const res = await browser.tabs.sendMessage(currentTabId, {
-        from: "side",
-        to: "content",
-        data: {
-          type: "fetchNotiFeedActivities",
-        },
-      });
+      const res = await sendMessage("fetchNotiFeedActivities");
       console.log("res", res);
       return res;
     },
